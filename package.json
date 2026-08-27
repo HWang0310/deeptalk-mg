@@ -1,0 +1,28 @@
+{
+  "name": "deeptalk-mg",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "lint": "eslint . --max-warnings=0",
+    "typecheck": "tsc --noEmit",
+    "render:benchmarks": "node scripts/render-benchmarks.mjs",
+    "qa:benchmarks": "node scripts/qa-benchmarks.mjs"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.507",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "remotion": "4.0.507"
+  },
+  "devDependencies": {
+    "@remotion/eslint-config-flat": "4.0.507",
+    "@types/node": "22.10.5",
+    "@types/react": "19.2.7",
+    "@types/react-dom": "19.2.3",
+    "eslint": "9.19.0",
+    "typescript": "5.9.3",
+    "vitest": "3.0.7"
+  }
+}

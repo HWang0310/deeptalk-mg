@@ -1,0 +1,13 @@
+node_modules/
+dist/
+coverage/
+output/
+*.mp4
+*.mov
+*.webm
+*.png
+*.jpg
+*.jpeg
+*.log
+.DS_Store
+

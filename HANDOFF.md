@@ -1,0 +1,18 @@
+# Handoff History
+
+## 2026-08-27 — Project creation and approved V2 direction
+
+- Created an independent repository for MG Quality V2 R&D.
+- DeepTalk Core was inspected only at `agent/multi-asset-studio` commit `475c144c8dd7696a5ccb49604ada6c4fa4542857`; no Core file was changed.
+- Product/Architecture Review approved Remotion-first rendering, an independent MG core design system, extendable profiles and scene grammars, and restrained Chinese editorial design as the first profile hypothesis.
+- V0 evidence must compare Legacy baseline with the V2 profile across eight stable Chinese benchmark scene types.
+
+## 2026-08-27 — V0 rendered evidence
+
+- Implemented standalone TypeScript/Remotion source, eight `mg-scene/1` benchmark definitions, editorial profile tokens, bounded Chinese copy fitting, and eight scene grammars.
+- First render created eight local MP4s, 24 phase stills, eight contact sheets, manifests, and `qa.json` files under gitignored `output/`.
+- Machine QA passed all eight: 1920×1080, 30fps, 8.000s video stream, three stills, and SHA-256.
+- A second unchanged render produced matching SHA-256 values for all eight MP4s.
+- Human review found hierarchy and progressive disclosure promising, while repeated headline/rule composition and weaker cycle/relationship/abstract grammars remain V0 limitations.
+- QA was fixed to inspect video-stream duration rather than a trailing silent audio stream, and to ignore non-directory overview media in `output/`; both cases have regression coverage.
+- DeepTalk Core remains unmodified.
