@@ -16,3 +16,14 @@
 - Human review found hierarchy and progressive disclosure promising, while repeated headline/rule composition and weaker cycle/relationship/abstract grammars remain V0 limitations.
 - QA was fixed to inspect video-stream duration rather than a trailing silent audio stream, and to ignore non-directory overview media in `output/`; both cases have regression coverage.
 - DeepTalk Core remains unmodified.
+- During V0.1 repeat verification, native Chrome GL produced differing pixels for `multi-node`; isolated SwiftShader renders matched SHA-256 exactly. The canonical render script now selects `--gl=swiftshader`; a full-suite rerun under that backend remains an explicit follow-up verification item.
+
+## 2026-08-27 — V0.1 Quality Differentiation
+
+- Preserved all eight V0 benchmark scene definitions and locally snapshotted V0 evidence before rendering V0.1.
+- Causal now uses pressure propagation and accumulated consequence; cycle uses an explicit return path; relationship uses weighted influence links and a central actor; abstract uses surface/threshold/underlying layers.
+- Added composition anchor rules to avoid random variation while reducing repeated top-left-title framing.
+- Added eight-category adversarial typography suite. Long unreadable display copy and extreme labels fail closed; fitting cases preserve every source character.
+- V0/V0.1 side-by-side evidence and review are local under `evidence/v0-v0.1-comparison/`.
+- No user aesthetic choice was required. V0.1 passes the quality-differentiation R&D gate with stated limitations.
+- DeepTalk Core remains unmodified.

@@ -13,7 +13,7 @@ const call = (args) => {
 
 for (const id of ids) {
   const dir = resolve(root, id); mkdirSync(dir, {recursive: true});
-  const common = ['src/index.ts', `Benchmark-${id}`, `--browser-executable=${chrome}`, '--concurrency=1', '--log=error'];
+  const common = ['src/index.ts', `Benchmark-${id}`, `--browser-executable=${chrome}`, '--concurrency=1', '--gl=swiftshader', '--log=error'];
   call(['remotion', 'render', ...common, resolve(dir, 'scene.mp4'), '--codec=h264']);
   call(['remotion', 'still', ...common, resolve(dir, 'opening.png'), '--frame=0']);
   call(['remotion', 'still', ...common, resolve(dir, 'primary.png'), '--frame=36']);

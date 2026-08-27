@@ -2,6 +2,7 @@ node_modules/
 dist/
 coverage/
 output/
+evidence/
 *.mp4
 *.mov
 *.webm
@@ -10,4 +11,3 @@ output/
 *.jpeg
 *.log
 .DS_Store
-

@@ -8,7 +8,7 @@
 | --- | --- |
 | Repository | `HWang0310/deeptalk-mg` |
 | Branch | `main` |
-| Stage | V0 R&D prototype, rendered and verified |
+| Stage | V0.1 Quality Differentiation, rendered and verified |
 | Product boundary | Deterministic, local MG asset research; no DeepTalk integration or shared plugin contract |
 | Renderer decision | Remotion-first, local 1920×1080 at 30fps |
 | Primary visual hypothesis | Restrained Chinese editorial/financial profile with progressive disclosure |
@@ -22,15 +22,17 @@
 
 ## Current best prototype
 
-`editorial-cn-v1` renders eight deterministic Chinese benchmark scenes through independent `mg-scene/1` inputs and Remotion scene grammars. Each scene has a local MP4, opening/primary/full stills, contact sheet, manifest, and machine QA result. A second unchanged render produced matching SHA-256 hashes for all eight MP4 files.
+`editorial-cn-v1` renders the unchanged eight-scene benchmark through independent `mg-scene/1` inputs and differentiated Remotion grammars. Causal, cycle, relationship, and abstract scenes now have distinct composition anchors and meaning-bound motion structures. Each scene has local MP4, opening/primary/full stills, contact sheet, manifest, and machine QA result.
 
-## Verified in V0
+## Verified in V0 and V0.1
 
 - Standalone local render: yes; no DeepTalk runtime import or API key.
 - Structured input to real MG asset: yes, through `mg-scene/1`.
 - Repeatability: yes, two render runs produced matching MP4 SHA-256 values.
 - Machine QA: yes, all eight outputs pass dimensions, 30fps video-stream duration, phase-still, and SHA checks.
 - Human review: completed; see `docs/reviews/2026-08-27-v0-human-visual-review.md`.
+- V0/V0.1 comparison: completed from the same eight definitions; see `docs/reviews/2026-08-27-v0.1-quality-differentiation-review.md`.
+- Typography adversarial suite: eight required categories plus intentional fail-closed cases are covered by automated tests.
 
 ## Not yet evidenced
 
@@ -44,7 +46,9 @@
 - The default profile is visually consistent but its repeated top-left rule and headline placement still create template feeling.
 - Relationship, cycle, causal, and abstract grammars need more distinctive spatial and motion composition.
 - Cross-machine Chinese font reproducibility and real-episode effectiveness remain unverified.
+- Causal branching/delay, positive/negative feedback, relationship tension, and bottleneck/constraint abstract variants remain unverified.
+- Native Chrome GL produced one unstable `multi-node` render at the pixel level. The renderer is now configured for SwiftShader; isolated repeated relationship renders matched SHA, while a full-suite SwiftShader regeneration remains future verification work.
 
 ## Next gate
 
-Design and benchmark stronger grammar-specific V0.1 compositions while preserving progressive disclosure. Do not define a cross-plugin contract or integrate with DeepTalk Core.
+Run V0.2 grammar-depth R&D only after Product Review: strengthen semantic variants within the four differentiated grammars, then consider a narrowly scoped viewer/editor comprehension evaluation. Do not define a cross-plugin contract or integrate with DeepTalk Core.

@@ -12,4 +12,15 @@ describe('editorial scene grammars', () => {
     const html = renderToStaticMarkup(<BenchmarkScene scene={BENCHMARK_SCENES[0]} />);
     expect(html).toContain('真正重要的不是速度，而是决策质量。');
   });
+
+  it('renders meaning-bound markers for the four differentiated grammars', () => {
+    const rendered = Object.fromEntries(BENCHMARK_SCENES.map((scene) => [
+      scene.benchmarkKind,
+      renderToStaticMarkup(<BenchmarkScene scene={scene} frame={120} />),
+    ]));
+    expect(rendered['causal-chain']).toContain('causal-pressure-propagation');
+    expect(rendered['process-cycle']).toContain('cycle-feedback-return');
+    expect(rendered['multi-node']).toContain('relationship-influence-weight');
+    expect(rendered['abstract-explanation']).toContain('abstract-surface-threshold');
+  });
 });
