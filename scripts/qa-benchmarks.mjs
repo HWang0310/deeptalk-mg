@@ -7,7 +7,7 @@ import {fileURLToPath} from 'node:url';
 
 const parseRate = (value) => { const [n, d] = value.split('/').map(Number); return d ? n / d : n; };
 export const outputDirectories = (root) => readdirSync(root, {withFileTypes: true})
-  .filter((entry) => entry.isDirectory()).map((entry) => entry.name).sort();
+  .filter((entry) => entry.isDirectory() && !entry.name.startsWith('variants') && entry.name !== 'common-brief-trial').map((entry) => entry.name).sort();
 
 export const runQa = (root = resolve('output')) => {
 for (const id of outputDirectories(root)) {
