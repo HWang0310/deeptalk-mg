@@ -1,0 +1,8 @@
+/* global process */
+import {mkdirSync, writeFileSync} from 'node:fs';
+import {spawnSync} from 'node:child_process';
+import {resolve} from 'node:path';
+const ids=['causal-branching','causal-delayed','causal-pressure','causal-cumulative','cycle-positive','cycle-negative','cycle-accelerating','cycle-weakening','relationship-dependency','relationship-tension','relationship-hierarchy','relationship-collaboration','abstract-bottleneck','abstract-constraint','abstract-threshold','abstract-accumulation','abstract-hidden','abstract-compounding'];
+const chrome='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'; const root=resolve(process.env.MG_OUTPUT_ROOT ?? 'output/variants');
+const call=(args)=>{const r=spawnSync('npx',args,{stdio:'inherit'});if(r.status!==0)process.exit(r.status??1);};
+for(const id of ids){const dir=resolve(root,id);mkdirSync(dir,{recursive:true});const common=['src/index.ts',`Variant-${id}`,`--browser-executable=${chrome}`,'--concurrency=1','--gl=swiftshader','--log=error'];call(['remotion','render',...common,resolve(dir,'scene.mp4'),'--codec=h264']);for(const [file,frame] of [['opening.png','0'],['primary.png','36'],['full.png','209']])call(['remotion','still',...common,resolve(dir,file),`--frame=${frame}`]);call(['ffmpeg','-y','-loglevel','error','-i',resolve(dir,'opening.png'),'-i',resolve(dir,'primary.png'),'-i',resolve(dir,'full.png'),'-filter_complex','hstack=inputs=3',resolve(dir,'contact-sheet.png')]);writeFileSync(resolve(dir,'manifest.json'),JSON.stringify({sceneId:id,composition:`Variant-${id}`,semanticVariant:id.replace(/^[a-z]+-/,'').replace(/-/g,'-'),expected:{width:1920,height:1080,fps:30,durationSeconds:7,stills:['opening.png','primary.png','full.png']}},null,2)+'\n');}

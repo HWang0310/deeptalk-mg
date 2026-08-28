@@ -49,6 +49,10 @@
 - Causal branching/delay, positive/negative feedback, relationship tension, and bottleneck/constraint abstract variants remain unverified.
 - Native Chrome GL produced one unstable `multi-node` render at the pixel level. The renderer is now configured for SwiftShader; isolated repeated relationship renders matched SHA, while a full-suite SwiftShader regeneration remains future verification work.
 
+## V0.2 Final Status
+
+**PARTIAL / NEEDS_REWORK.** The 18-scene corpus has passed two fixed-SwiftShader H.264 renders with 18/18 binary-identical MP4 SHA-256 values and media QA. However the formal review finds the semantic overlays visible principally in late disclosure frames; at first glance several family members still share too much of their V0.1 base layout. This is evidence, not a PASS claim.
+
 ## Next gate
 
 Run V0.2 grammar-depth R&D only after Product Review: strengthen semantic variants within the four differentiated grammars, then consider a narrowly scoped viewer/editor comprehension evaluation. Do not define a cross-plugin contract or integrate with DeepTalk Core.

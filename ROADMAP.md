@@ -22,3 +22,7 @@
 - A cross-plugin contract.
 - DeepTalk integration and Candidate Portfolio.
 - Episode production, automatic editing, publishing, and formal release.
+# V0.2 closure note
+
+- Completed: 18 semantic variant definitions, fixed SwiftShader run A/run B, 18/18 binary-identical MP4 evidence, media QA.
+- Needs rework before V0.2 PASS: strengthen first-glance composition differentiation within causal, cycle, relationship and abstract families; rerender and re-review only after those changes.

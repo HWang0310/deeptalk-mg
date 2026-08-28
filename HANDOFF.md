@@ -27,3 +27,9 @@
 - V0/V0.1 side-by-side evidence and review are local under `evidence/v0-v0.1-comparison/`.
 - No user aesthetic choice was required. V0.1 passes the quality-differentiation R&D gate with stated limitations.
 - DeepTalk Core remains unmodified.
+# V0.2 reconciliation — 2026-08-28
+
+- V0 = initial editorial-cn-v1 grammar baseline; V0.1 = differentiation of causal/cycle/relationship/abstract; V0.2 = robustness within those grammar families.
+- Run A: `output/variants`; run B: `output/variants-run-b`; repeatability snapshots: `evidence/v0.2-repeatability` (local/gitignored).
+- Fixed path: SwiftShader, concurrency 1, H.264, 1920x1080, 30fps, 7 seconds. Run A and B: 18/18 MP4 SHA-256 digest match; both media QA passes.
+- Human-review outcome is PARTIAL / NEEDS_REWORK. All variants are structurally distinct in their late overlay/path disclosure, but causal, cycle, relationship and abstract retain too much shared initial layout. Do not advance to V0.3 or Cross-Plugin trial.
