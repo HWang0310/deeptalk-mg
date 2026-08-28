@@ -12,6 +12,11 @@ export const GRAMMARS = [
 export type BenchmarkKind = (typeof BENCHMARK_KINDS)[number];
 export type Grammar = (typeof GRAMMARS)[number];
 export type Profile = 'editorial-cn-v1';
+export type SemanticVariant =
+  | 'branching-consequence' | 'delayed-effect' | 'pressure-transfer' | 'cumulative-consequence'
+  | 'positive-feedback' | 'negative-feedback' | 'accelerating-loop' | 'weakening-loop'
+  | 'dependency' | 'tension' | 'hierarchy' | 'collaboration'
+  | 'bottleneck' | 'constraint' | 'threshold' | 'accumulation' | 'hidden-mechanism' | 'compounding';
 
 export type MgScene = {
   sceneVersion: 'mg-scene/1';
@@ -22,6 +27,7 @@ export type MgScene = {
   durationSeconds: number;
   primaryJudgment: string;
   supporting: string[];
+  semanticVariant?: SemanticVariant;
 };
 
 const has = <T extends readonly string[]>(values: T, value: string): boolean => values.includes(value);

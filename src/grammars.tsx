@@ -68,5 +68,11 @@ const Metaphor: GrammarComponent = ({scene, frame}) => <div style={full} data-gr
 
 const GRAMMAR_COMPONENTS: Record<Grammar, GrammarComponent> = {thesis: Thesis, 'causal-flow': Causal, cycle: Cycle, 'paired-contrast': Comparison, 'delta-metric': Delta, 'relationship-map': Relationship, 'editorial-timeline': Timeline, 'layered-metaphor': Metaphor};
 export const grammarFor = (grammar: Grammar): GrammarComponent => GRAMMAR_COMPONENTS[grammar];
-export const BenchmarkScene: React.FC<{scene: MgScene; frame?: number}> = ({scene, frame = 0}) => {const Component = grammarFor(scene.grammar); return <Component scene={scene} frame={frame}/>;};
+const VARIANT_CUES: Partial<Record<NonNullable<MgScene['semanticVariant']>, string>> = {
+  'branching-consequence': '一因 · 双向后果', 'delayed-effect': '延迟显形', 'pressure-transfer': '压力转移', 'cumulative-consequence': '逐层累积',
+  'positive-feedback': '放大回路', 'negative-feedback': '回拉回路', 'accelerating-loop': '加速回路', 'weakening-loop': '衰减回路',
+  dependency: '关键依赖', tension: '目标拉扯', hierarchy: '权力层级', collaboration: '协同汇聚',
+  bottleneck: '最窄环节', constraint: '隐性约束', threshold: '临界阈值', accumulation: '持续叠加', 'hidden-mechanism': '底层机制', compounding: '逐轮抬升',
+};
+export const BenchmarkScene: React.FC<{scene: MgScene; frame?: number}> = ({scene, frame = 0}) => {const Component = grammarFor(scene.grammar); const cue = scene.semanticVariant && VARIANT_CUES[scene.semanticVariant]; return <div data-semantic-variant={scene.semanticVariant}><Component scene={scene} frame={frame}/>{cue && <div style={{position: 'absolute', right: 136, bottom: 76, color: token.colors.accent, fontFamily: token.typography.body, fontSize: 24, letterSpacing: 2, opacity: rise(frame, 54)}}>{cue}</div>}</div>;};
 export const BenchmarkComposition: React.FC<{scene: MgScene}> = ({scene}) => <BenchmarkScene scene={scene} frame={useCurrentFrame()}/>;
