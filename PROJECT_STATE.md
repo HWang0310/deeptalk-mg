@@ -53,6 +53,10 @@
 
 **PASS.** V0.2 moved semantic overlays into the first disclosure window, then completed two unchanged fixed-SwiftShader H.264 renders with 18/18 binary-identical MP4 SHA-256 values and media QA. The family review accepts bounded semantic sub-patterns while retaining the editorial-cn-v1 system.
 
+## Common Brief Trial — MG Track
+
+Completed locally for CB01–CB08 using only existing grammars/variants. All eight were assessed SUITABLE and rendered under the canonical SwiftShader path; media QA passed. This is comparison evidence only, not a Plugin Contract or a new MG version.
+
 ## Next gate
 
 Run V0.2 grammar-depth R&D only after Product Review: strengthen semantic variants within the four differentiated grammars, then consider a narrowly scoped viewer/editor comprehension evaluation. Do not define a cross-plugin contract or integrate with DeepTalk Core.
