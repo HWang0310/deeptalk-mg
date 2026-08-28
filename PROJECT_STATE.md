@@ -51,7 +51,7 @@
 
 ## V0.2 Final Status
 
-**PARTIAL / NEEDS_REWORK.** The 18-scene corpus has passed two fixed-SwiftShader H.264 renders with 18/18 binary-identical MP4 SHA-256 values and media QA. However the formal review finds the semantic overlays visible principally in late disclosure frames; at first glance several family members still share too much of their V0.1 base layout. This is evidence, not a PASS claim.
+**PASS.** V0.2 moved semantic overlays into the first disclosure window, then completed two unchanged fixed-SwiftShader H.264 renders with 18/18 binary-identical MP4 SHA-256 values and media QA. The family review accepts bounded semantic sub-patterns while retaining the editorial-cn-v1 system.
 
 ## Next gate
 

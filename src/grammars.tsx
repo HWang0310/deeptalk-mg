@@ -75,7 +75,7 @@ const VARIANT_CUES: Partial<Record<NonNullable<MgScene['semanticVariant']>, stri
   bottleneck: '最窄环节', constraint: '隐性约束', threshold: '临界阈值', accumulation: '持续叠加', 'hidden-mechanism': '底层机制', compounding: '逐轮抬升',
 };
 const VariantOverlay: React.FC<{scene: MgScene; frame: number}> = ({scene, frame}) => {
-  const v = scene.semanticVariant; if (!v) return null; const p = rise(frame, 36); const accent = token.colors.accent;
+  const v = scene.semanticVariant; if (!v) return null; const p = rise(frame, 4); const accent = token.colors.accent;
   const layer: React.CSSProperties = {position: 'absolute', inset: 0, pointerEvents: 'none', opacity: p};
   if (scene.grammar === 'causal-flow') {
     if (v === 'branching-consequence') return <svg style={layer} width="1920" height="1080"><path d="M 980 485 L 1210 385 M 980 485 L 1210 650" stroke={accent} strokeWidth="8" fill="none"/><circle cx="980" cy="485" r="22" fill={accent}/><circle cx="1210" cy="385" r="15" fill={accent}/><circle cx="1210" cy="650" r="15" fill={accent}/></svg>;
