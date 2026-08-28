@@ -13,4 +13,4 @@
 
 - Added 18 semantic-variant corpus definitions and canonical SwiftShader render script.
 - Verified two unchanged full renders are binary-identical for all 18 H.264 MP4 outputs.
-- Recorded a PARTIAL / NEEDS_REWORK review result: cue overlays alone do not yet establish sufficient first-glance semantic differentiation.
+- Corrected the first-disclosure timing and recorded V0.2 PASS after a fresh two-run corpus verification.
