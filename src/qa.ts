@@ -16,3 +16,13 @@ export function validateQaRecord(record: QaRecord): true {
   if (!/^[a-f0-9]{64}$/.test(record.sha256)) throw new Error('sha256 must be valid');
   return true;
 }
+
+export type RunnerMediaQa = Pick<QaRecord, 'width' | 'height' | 'fps' | 'durationSeconds' | 'sha256'>;
+
+export function validateRunnerMediaQa(record: RunnerMediaQa): true {
+  if (record.width !== 1920 || record.height !== 1080) throw new Error('dimensions must be 1920x1080');
+  if (record.fps !== 30) throw new Error('fps must be 30');
+  if (!Number.isFinite(record.durationSeconds) || record.durationSeconds <= 0) throw new Error('duration must be positive');
+  if (!/^[a-f0-9]{64}$/.test(record.sha256)) throw new Error('sha256 must be valid');
+  return true;
+}

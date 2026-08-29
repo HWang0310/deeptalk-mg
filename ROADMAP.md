@@ -19,9 +19,14 @@
 
 ## Deferred
 
-- A cross-plugin contract.
-- DeepTalk integration and Candidate Portfolio.
+- DeepTalk Core integration, Core-side acceptance/pinning, and Candidate Portfolio.
 - Episode production, automatic editing, publishing, and formal release.
+
+## Contract V1 runner — IMPLEMENTED_UNRELEASED
+
+- Added on `agent/phase3a-contract-v1-runner` for independent review only.
+- The local runner supports deterministic causal/mechanism suitability and dynamic rendering through the existing `mg-scene/1` causal-flow grammar.
+- No Core repository integration, production configuration, release, or real-episode gate is implied.
 # V0.2 closure note
 
 - Completed: 18 semantic variant definitions, fixed SwiftShader run A/run B, 18/18 binary-identical MP4 evidence, media QA.

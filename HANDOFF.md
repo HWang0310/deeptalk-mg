@@ -33,3 +33,11 @@
 - Run A: `output/variants`; run B: `output/variants-run-b`; repeatability snapshots: `evidence/v0.2-repeatability` (local/gitignored).
 - Fixed path: SwiftShader, concurrency 1, H.264, 1920x1080, 30fps, 7 seconds. Run A and B: 18/18 MP4 SHA-256 digest match; both media QA passes.
 - Human-review outcome is PASS after moving semantic overlays into the first disclosure window. Do not advance to V0.3 or Cross-Plugin trial without Product Review.
+
+## 2026-08-29 — Contract V1 runner review branch
+
+- Implemented the plugin-owned `visual-asset-plugin-contract/1` runner on `agent/phase3a-contract-v1-runner` with fixed identity `deeptalk-mg` and independent version `1.0.0-contract-v1`.
+- The one-shot local CLI accepts `--request`, `--result`, and `--output-dir`, or emits its exact version through `--version`; it has no network/service/Core import path.
+- Causal/mechanism transmission compiles dynamically into an existing validated `mg-scene/1` causal-flow scene and a stable Remotion composition, never a committed benchmark lookup or generated composition source.
+- Generation produces `scene.mp4`, manifest, and QA under the supplied root, uses actual ffprobe duration/SHA, preserves plugin-generated provenance, writes the Contract result atomically, and has a two-fresh-root binary repeatability command.
+- Status is IMPLEMENTED_UNRELEASED and awaiting independent ChatGPT Review. This branch is not integrated with Core, accepted/pinned, released, tagged, or authorized for real-episode work.

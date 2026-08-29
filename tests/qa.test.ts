@@ -1,5 +1,5 @@
 import {describe, expect, it} from 'vitest';
-import {validateQaRecord} from '../src/qa';
+import {validateQaRecord, validateRunnerMediaQa} from '../src/qa';
 
 describe('benchmark machine QA', () => {
   it('accepts complete standard output metadata', () => {
@@ -12,5 +12,9 @@ describe('benchmark machine QA', () => {
 
   it('rejects a render missing a phase still', () => {
     expect(() => validateQaRecord({width: 1920, height: 1080, fps: 30, durationSeconds: 8, expectedDurationSeconds: 8, stillCount: 2, sha256: 'a'.repeat(64)})).toThrow('stillCount');
+  });
+
+  it('accepts dynamic runner media without requiring benchmark still fixtures', () => {
+    expect(validateRunnerMediaQa({width: 1920, height: 1080, fps: 30, durationSeconds: 7, sha256: 'b'.repeat(64)})).toBe(true);
   });
 });

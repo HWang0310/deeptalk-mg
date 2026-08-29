@@ -10,7 +10,9 @@
     "render:benchmarks": "node scripts/render-benchmarks.mjs",
     "qa:benchmarks": "node scripts/qa-benchmarks.mjs",
     "render:variants": "node scripts/render-variants.mjs",
-    "qa:variants": "node -e \"import('./scripts/qa-benchmarks.mjs').then(({runQa})=>runQa('output/variants'))\""
+    "qa:variants": "node -e \"import('./scripts/qa-benchmarks.mjs').then(({runQa})=>runQa('output/variants'))\"",
+    "contract:runner": "vite-node scripts/contract-runner-cli.ts",
+    "verify:contract-runner": "node scripts/verify-contract-runner.mjs"
   },
   "dependencies": {
     "@remotion/cli": "4.0.507",

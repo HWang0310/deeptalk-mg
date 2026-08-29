@@ -9,6 +9,7 @@
 - Independent Remotion-first `mg-scene/1` prototype, editorial design tokens, Chinese copy fitting, and eight deterministic benchmarks.
 - Local MP4/still/contact-sheet evidence, media QA, repeat-render SHA verification, and human visual review.
 - V0.1 meaning-bound causal, cycle, relationship, and abstract grammars; intentional composition variation; adversarial Chinese typography tests; and V0/V0.1 regression evidence.
+- Plugin-owned Visual Asset Plugin Contract V1 local runner with strict file JSON requests/results, deterministic suitability/proposal/candidate IDs, dynamic `ContractDynamic` Remotion props, real media/QA artifacts, atomic results, containment checks, and repeatability verification.
 # Unreleased — V0.2 verification
 
 - Added 18 semantic-variant corpus definitions and canonical SwiftShader render script.

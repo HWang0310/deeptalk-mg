@@ -8,8 +8,8 @@
 | --- | --- |
 | Repository | `HWang0310/deeptalk-mg` |
 | Branch | `main` |
-| Stage | V0.1 Quality Differentiation, rendered and verified |
-| Product boundary | Deterministic, local MG asset research; no DeepTalk integration or shared plugin contract |
+| Stage | Contract V1 runner IMPLEMENTED_UNRELEASED on review branch; awaiting independent ChatGPT Review |
+| Product boundary | Deterministic local MG asset research plus a plugin-owned Contract V1 runner; no DeepTalk runtime integration, acceptance, or pin |
 | Renderer decision | Remotion-first, local 1920×1080 at 30fps |
 | Primary visual hypothesis | Restrained Chinese editorial/financial profile with progressive disclosure |
 
@@ -59,4 +59,4 @@ Completed locally for CB01–CB08 using only existing grammars/variants. All eig
 
 ## Next gate
 
-Run V0.2 grammar-depth R&D only after Product Review: strengthen semantic variants within the four differentiated grammars, then consider a narrowly scoped viewer/editor comprehension evaluation. Do not define a cross-plugin contract or integrate with DeepTalk Core.
+Independent ChatGPT Review of the Contract V1 runner branch. It is not integrated with Core, accepted/pinned in Core configuration, or eligible for any real-episode use.
