@@ -111,4 +111,4 @@
 
 - [x] Record `IMPLEMENTED_UNRELEASED`, review-branch status, local-only contract boundary, no Core integration/acceptance/pin, and documented runner command.
 - [x] Run fresh `npm test`, `npm run lint`, `npm run typecheck`, `npm run qa:benchmarks`, and `npm run verify:contract-runner`; inspect each exit code/output.
-- [ ] Review the final diff against all Contract V1 requirements, commit documentation and remaining code, push `agent/phase3a-contract-v1-runner`, and verify `origin/<branch>` equals local `HEAD`.
+- [x] Review the final diff against all Contract V1 requirements, commit documentation and remaining code, push `agent/phase3a-contract-v1-runner`, and verify `origin/<branch>` equals local `HEAD`.
