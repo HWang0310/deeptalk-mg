@@ -1,3 +1,14 @@
+---
+AIGC:
+  ContentProducer: '001191110102MAD55U9H0F10002'
+  ContentPropagator: '001191110102MAD55U9H0F10002'
+  Label: '1'
+  ProduceID: '9c28e75e-315a-4e16-b3e1-19c514d0fe36'
+  PropagateID: '9c28e75e-315a-4e16-b3e1-19c514d0fe36'
+  ReservedCode1: 'c4e40922-6701-4820-bd18-b3570d908b96'
+  ReservedCode2: 'c4e40922-6701-4820-bd18-b3570d908b96'
+---
+
 # DeepTalk MG — Engineering Protocol
 
 ## Bootstrap
@@ -14,7 +25,7 @@ At the beginning of every task:
 ## Scope and safety
 
 - This repository develops an independent MG visual-asset prototype. It is not DeepTalk Core.
-- Never modify `/Users/hwang/Movies/Codex工作空间/deep-talk-studio` while working here. It is a read-only legacy reference.
+- Never modify `/Users/hwang/Movies/Program/DeepTalk/deep-talk-studio` while working here. It is a read-only legacy reference.
 - Do not design a shared Visual Asset Plugin Contract, Candidate Portfolio, Episode workflow, automatic editing, NLE project, or production release here.
 - Media and generated artifacts live in `output/` and remain gitignored. Git tracks definitions, QA JSON, contact sheets only when deliberately small, source, tests, and documentation.
 - No credentials, API keys, private episode material, or proxy settings belong in this repository.
@@ -26,4 +37,3 @@ At the beginning of every task:
 - Chinese text must be measured and fitted before render; never silently clip, abbreviate, or overlap semantic text.
 - Machine QA verifies artifact integrity and structural assertions. Human visual review evaluates composition, rhythm, hierarchy, editorial character, and template feeling.
 - `PROJECT_STATE.md` is the canonical current truth; `HANDOFF.md` is chronological history.
-
