@@ -2,7 +2,7 @@ import {createHash} from 'node:crypto';
 import {validateScene, type MgScene} from './model';
 
 export const CONTRACT_VERSION = 'visual-asset-plugin-contract/1';
-export const PLUGIN_ID = 'deeptalk-mg';
+export const PLUGIN_ID = 'org.deeptalk.mg';
 export const PLUGIN_VERSION = '1.0.0-contract-v1';
 export const COMPILER_SEMANTICS = 'causal-flow/compiler-v1';
 export const SUITABILITY_OPERATION_STATUSES = ['COMPLETED', 'FAILED', 'UNAVAILABLE'] as const;

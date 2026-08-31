@@ -41,3 +41,10 @@
 - Causal/mechanism transmission compiles dynamically into an existing validated `mg-scene/1` causal-flow scene and a stable Remotion composition, never a committed benchmark lookup or generated composition source.
 - Generation produces `scene.mp4`, manifest, and QA under the supplied root, uses actual ffprobe duration/SHA, preserves plugin-generated provenance, writes the Contract result atomically, and has a two-fresh-root binary repeatability command.
 - Status is IMPLEMENTED_UNRELEASED and awaiting independent ChatGPT Review. This branch is not integrated with Core, accepted/pinned, released, tagged, or authorized for real-episode work.
+
+## 2026-08-31 — Phase 3A-1 final Core-boundary correction
+
+- Corrected the Core-facing identity from the repository name to `org.deeptalk.mg` while retaining plugin version `1.0.0-contract-v1`; Suitability, Generation, deterministic IDs, and manifest evidence now share that identity.
+- Added `scripts/contract-runner.js` as the only stable external executable. It delegates through repo-local tooling with explicit argv, no shell, clean Contract stdout, bounded stderr, and exit-code propagation; Core requires no vite-node or TypeScript path knowledge.
+- Canonical-entrypoint tests cover version, SUITABLE/BORDERLINE/ABSTAIN, legal proposal-mismatch BLOCKED, unavailable renderer, atomic result replacement, traversal/absolute escape, supplied-root/ancestor/descendant symlinks, and output containment. Real verification invokes only the canonical entrypoint and renders the same sanitized causal opportunity in two fresh roots.
+- Status remains IMPLEMENTED_UNRELEASED and ready only for independent ChatGPT pin review. No Core, Illustrated, Hand-drawn, Episode, main, tag, or Release change is included.

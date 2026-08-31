@@ -1,7 +1,7 @@
 import {closeSync, existsSync, fsyncSync, lstatSync, mkdirSync, openSync, readFileSync, renameSync, writeSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 import {spawnSync} from 'node:child_process';
-import {dirname, resolve} from 'node:path';
+import {dirname, isAbsolute, join, parse, relative, resolve, sep} from 'node:path';
 import {
   CONTRACT_VERSION, PLUGIN_VERSION, assessSuitability, blockedGenerationResult, buildQaRejectedGenerationResult, buildReadyGenerationResult,
   compileOpportunity, failedGenerationResult, proposalId, suitabilityFor, unavailableGenerationResult, validateRequest, type GenerationRequest,
@@ -31,16 +31,29 @@ function parseArgs(argv: string[]): Args {
 }
 
 export function ensureArtifactPath(outputDir: string, relativePath: string): string {
-  if (!relativePath || relativePath.startsWith('/') || relativePath.split(/[\\/]/).includes('..')) throw new Error('artifact path must remain beneath output-dir');
-  const root = resolve(outputDir); const target = resolve(root, relativePath);
-  if (target !== root && !target.startsWith(`${root}/`)) throw new Error('artifact path must remain beneath output-dir');
-  if (lstatSync(root).isSymbolicLink()) throw new Error('output-dir must not be a symbolic link');
+  if (!relativePath || isAbsolute(relativePath) || relativePath.split(/[\\/]/).includes('..')) throw new Error('artifact path must remain beneath output-dir');
+  const root = ensureSafeOutputRoot(outputDir); const target = resolve(root, relativePath);
+  const containment = relative(root, target);
+  if (containment === '..' || containment.startsWith(`..${sep}`) || isAbsolute(containment)) throw new Error('artifact path must remain beneath output-dir');
   let current = root;
   for (const segment of relativePath.split(/[\\/]/)) {
     current = resolve(current, segment);
     if (existsSync(current) && lstatSync(current).isSymbolicLink()) throw new Error('artifact path must not traverse a symbolic link');
   }
   return target;
+}
+
+export function ensureSafeOutputRoot(outputDir: string): string {
+  const root = resolve(outputDir);
+  const filesystemRoot = parse(root).root;
+  let current = filesystemRoot;
+  for (const segment of root.slice(filesystemRoot.length).split(sep).filter(Boolean)) {
+    current = join(current, segment);
+    if (existsSync(current) && lstatSync(current).isSymbolicLink()) {
+      throw new Error('output-dir and its existing ancestors must not be symbolic links');
+    }
+  }
+  return root;
 }
 
 export function writeAtomicJson(resultPath: string, value: unknown): void {
@@ -98,7 +111,9 @@ export function main(argv = process.argv.slice(2)): void {
     process.stdout.write(`${PLUGIN_VERSION}\n`);
     return;
   }
-  const outputDir = resolve(args.outputDir!); mkdirSync(outputDir, {recursive: true});
+  const outputDir = ensureSafeOutputRoot(args.outputDir!);
+  mkdirSync(outputDir, {recursive: true});
+  ensureSafeOutputRoot(outputDir);
   const requestRaw = readFileSync(resolve(args.request!), 'utf8');
   let request: Record<string, unknown>;
   try { request = JSON.parse(requestRaw) as Record<string, unknown>; } catch { throw new Error('request must be valid JSON'); }

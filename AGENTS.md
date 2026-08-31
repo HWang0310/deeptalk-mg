@@ -25,7 +25,7 @@ At the beginning of every task:
 ## Scope and safety
 
 - This repository develops an independent MG visual-asset prototype. It is not DeepTalk Core.
-- Never modify `/Users/hwang/Movies/Program/DeepTalk/deep-talk-studio` while working here. It is a read-only legacy reference.
+- Never modify `/Users/hwang/Movies/Program/DeepTalk/deep-talk-studio` while working here. It is the read-only canonical Core reference.
 - Do not design a shared Visual Asset Plugin Contract, Candidate Portfolio, Episode workflow, automatic editing, NLE project, or production release here.
 - Media and generated artifacts live in `output/` and remain gitignored. Git tracks definitions, QA JSON, contact sheets only when deliberately small, source, tests, and documentation.
 - No credentials, API keys, private episode material, or proxy settings belong in this repository.

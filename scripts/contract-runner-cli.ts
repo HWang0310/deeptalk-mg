@@ -1,4 +1,4 @@
-import {main} from './contract-runner';
+import {main} from './contract-runner.ts';
 
 try {
   main();

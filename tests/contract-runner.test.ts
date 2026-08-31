@@ -1,4 +1,4 @@
-import {mkdtempSync, readFileSync, readdirSync, symlinkSync, writeFileSync} from 'node:fs';
+import {existsSync, mkdtempSync, readFileSync, realpathSync, readdirSync, symlinkSync, writeFileSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {join, resolve} from 'node:path';
 import {spawnSync} from 'node:child_process';
@@ -14,7 +14,9 @@ import {
   compileOpportunity,
   validateRequest,
 } from '../src/contract-runner';
-import {ensureArtifactPath, writeAtomicJson} from '../scripts/contract-runner';
+import {ensureArtifactPath, writeAtomicJson} from '../scripts/contract-runner.ts';
+
+const temporaryDirectory = (prefix: string) => realpathSync(mkdtempSync(join(tmpdir(), prefix)));
 
 const opportunity = {
   opportunity_id: 'opp-causal-001',
@@ -29,7 +31,7 @@ const opportunity = {
 describe('Visual Asset Plugin Contract V1 suitability', () => {
   it('publishes the fixed contract plugin identity', () => {
     expect(CONTRACT_VERSION).toBe('visual-asset-plugin-contract/1');
-    expect(PLUGIN_ID).toBe('deeptalk-mg');
+    expect(PLUGIN_ID).toBe('org.deeptalk.mg');
     expect(PLUGIN_VERSION).toBe('1.0.0-contract-v1');
   });
 
@@ -83,7 +85,11 @@ describe('Visual Asset Plugin Contract V1 suitability', () => {
 });
 
 describe('contract runner CLI', () => {
-  const run = (args: string[]) => spawnSync(process.execPath, [resolve('node_modules/vite-node/vite-node.mjs'), 'scripts/contract-runner-cli.ts', ...args], {encoding: 'utf8'});
+  const run = (args: string[], env = process.env) => spawnSync(
+    process.execPath,
+    ['scripts/contract-runner.js', ...args],
+    {cwd: resolve('.'), encoding: 'utf8', env},
+  );
 
   it('prints only its stable plugin version for --version', () => {
     const result = run(['--version']);
@@ -93,63 +99,137 @@ describe('contract runner CLI', () => {
   });
 
   it('writes a completed suitability response to the caller result path', () => {
-    const root = mkdtempSync(join(tmpdir(), 'deeptalk-mg-contract-'));
+    const root = temporaryDirectory('deeptalk-mg-contract-');
     const request = join(root, 'request.json'); const result = join(root, 'result.json');
     writeFileSync(request, JSON.stringify({contract_version: CONTRACT_VERSION, request_id: 'suit-cli', opportunity}));
 
     const process = run(['--request', request, '--result', result, '--output-dir', join(root, 'artifacts')]);
     expect(process.status).toBe(0);
     expect(process.stdout).toBe('');
-    expect(JSON.parse(readFileSync(result, 'utf8'))).toMatchObject({request_id: 'suit-cli', operation_status: 'COMPLETED', suitability: 'SUITABLE'});
+    expect(JSON.parse(readFileSync(result, 'utf8'))).toMatchObject({
+      request_id: 'suit-cli', plugin_id: 'org.deeptalk.mg', plugin_version: '1.0.0-contract-v1',
+      operation_status: 'COMPLETED', suitability: 'SUITABLE',
+    });
+  });
+
+  it.each([
+    ['BORDERLINE', '团队需要持续提高协同效率。', '概括工作方向。'],
+    ['ABSTAIN', '本季度收入增长 12.4%。', '展示准确数值。'],
+  ])('returns canonical %s suitability through the Node entrypoint', (expected, spoken_semantics, visual_purpose) => {
+    const root = temporaryDirectory('deeptalk-mg-contract-');
+    const request = join(root, 'request.json'); const result = join(root, 'result.json');
+    writeFileSync(request, JSON.stringify({
+      contract_version: CONTRACT_VERSION, request_id: `suit-${expected.toLowerCase()}`,
+      opportunity: {...opportunity, opportunity_id: `opp-${expected.toLowerCase()}`, spoken_semantics, visual_purpose},
+    }));
+
+    const process = run(['--request', request, '--result', result, '--output-dir', join(root, 'artifacts')]);
+
+    expect(process.status).toBe(0);
+    expect(process.stdout).toBe('');
+    expect(JSON.parse(readFileSync(result, 'utf8'))).toMatchObject({
+      plugin_id: 'org.deeptalk.mg', plugin_version: '1.0.0-contract-v1',
+      operation_status: 'COMPLETED', suitability: expected,
+    });
   });
 
   it('rejects invalid request JSON without writing outside the supplied artifact root', () => {
-    const root = mkdtempSync(join(tmpdir(), 'deeptalk-mg-contract-'));
+    const root = temporaryDirectory('deeptalk-mg-contract-');
     const request = join(root, 'invalid.json'); const result = join(root, 'result.json'); const output = join(root, 'artifacts');
     writeFileSync(request, '{invalid');
 
     const process = run(['--request', request, '--result', result, '--output-dir', output]);
-    expect(process.status).not.toBe(0);
+    expect(process.status).toBe(1);
     expect(process.stderr).toContain('valid JSON');
   });
 
   it('rejects an artifact path traversal before a renderer can write it', () => {
-    const root = mkdtempSync(join(tmpdir(), 'deeptalk-mg-contract-root-'));
+    const root = temporaryDirectory('deeptalk-mg-contract-root-');
     expect(() => ensureArtifactPath(root, '../outside.mp4')).toThrow('beneath output-dir');
     expect(() => ensureArtifactPath(root, '/tmp/outside.mp4')).toThrow('beneath output-dir');
   });
 
   it('rejects a symlinked artifact parent before a renderer can escape the output root', () => {
-    const root = mkdtempSync(join(tmpdir(), 'deeptalk-mg-contract-root-')); const outside = mkdtempSync(join(tmpdir(), 'deeptalk-mg-contract-outside-'));
+    const root = temporaryDirectory('deeptalk-mg-contract-root-'); const outside = temporaryDirectory('deeptalk-mg-contract-outside-');
     symlinkSync(outside, join(root, 'linked-output'));
     expect(() => ensureArtifactPath(root, 'linked-output/scene.mp4')).toThrow('symbolic link');
   });
 
+  it('rejects a symlink supplied as the canonical output root', () => {
+    const root = temporaryDirectory('deeptalk-mg-contract-root-');
+    const outside = temporaryDirectory('deeptalk-mg-contract-outside-');
+    const request = join(root, 'request.json'); const result = join(root, 'result.json'); const output = join(root, 'output-link');
+    symlinkSync(outside, output);
+    writeFileSync(request, JSON.stringify({contract_version: CONTRACT_VERSION, request_id: 'suit-root-link', opportunity}));
+
+    const process = run(['--request', request, '--result', result, '--output-dir', output]);
+
+    expect(process.status).not.toBe(0);
+    expect(process.stderr).toContain('symbolic link');
+    expect(existsSync(result)).toBe(false);
+  });
+
+  it('rejects an existing symlink ancestor before creating an output directory outside the lexical root', () => {
+    const root = temporaryDirectory('deeptalk-mg-contract-root-');
+    const outside = temporaryDirectory('deeptalk-mg-contract-outside-');
+    const request = join(root, 'request.json'); const result = join(root, 'result.json'); const alias = join(root, 'alias');
+    symlinkSync(outside, alias);
+    writeFileSync(request, JSON.stringify({contract_version: CONTRACT_VERSION, request_id: 'suit-ancestor-link', opportunity}));
+
+    const process = run(['--request', request, '--result', result, '--output-dir', join(alias, 'artifacts')]);
+
+    expect(process.status).not.toBe(0);
+    expect(process.stderr).toContain('symbolic link');
+    expect(existsSync(join(outside, 'artifacts'))).toBe(false);
+    expect(existsSync(result)).toBe(false);
+  });
+
   it('atomically replaces a complete result without leaving a temporary file', () => {
-    const root = mkdtempSync(join(tmpdir(), 'deeptalk-mg-contract-atomic-')); const result = join(root, 'result.json');
+    const root = temporaryDirectory('deeptalk-mg-contract-atomic-'); const result = join(root, 'result.json');
     writeFileSync(result, '{"old":true}\n');
     writeAtomicJson(result, {contract_version: CONTRACT_VERSION, operation_status: 'COMPLETED'});
     expect(JSON.parse(readFileSync(result, 'utf8'))).toEqual({contract_version: CONTRACT_VERSION, operation_status: 'COMPLETED'});
     expect(readdirSync(root).some((name) => name.includes('.tmp-'))).toBe(false);
   });
 
+  it('atomically replaces the canonical CLI result without transport stdout or temporary files', () => {
+    const root = temporaryDirectory('deeptalk-mg-contract-atomic-cli-');
+    const request = join(root, 'request.json'); const result = join(root, 'result.json');
+    writeFileSync(request, JSON.stringify({contract_version: CONTRACT_VERSION, request_id: 'suit-atomic', opportunity}));
+    writeFileSync(result, '{"old":true}\n');
+
+    const process = run(['--request', request, '--result', result, '--output-dir', join(root, 'artifacts')]);
+
+    expect(process.status).toBe(0);
+    expect(process.stdout).toBe('');
+    expect(JSON.parse(readFileSync(result, 'utf8'))).toMatchObject({request_id: 'suit-atomic', operation_status: 'COMPLETED'});
+    expect(readdirSync(root).some((name) => name.includes('.tmp-'))).toBe(false);
+  });
+
   it('returns a legal blocked result for a generation proposal that does not match the current opportunity', () => {
-    const root = mkdtempSync(join(tmpdir(), 'deeptalk-mg-contract-'));
+    const root = temporaryDirectory('deeptalk-mg-contract-');
     const request = join(root, 'request.json'); const result = join(root, 'result.json');
     writeFileSync(request, JSON.stringify({contract_version: CONTRACT_VERSION, request_id: 'gen-mismatch', proposal_id: 'prop_wrong', opportunity}));
 
     const process = run(['--request', request, '--result', result, '--output-dir', join(root, 'artifacts')]);
     expect(process.status).toBe(0);
-    expect(JSON.parse(readFileSync(result, 'utf8'))).toMatchObject({request_id: 'gen-mismatch', opportunity_id: opportunity.opportunity_id, proposal_id: 'prop_wrong', operation_status: 'BLOCKED', problem: {code: 'PROPOSAL_MISMATCH'}});
+    expect(JSON.parse(readFileSync(result, 'utf8'))).toMatchObject({
+      request_id: 'gen-mismatch', opportunity_id: opportunity.opportunity_id, proposal_id: 'prop_wrong',
+      plugin_id: 'org.deeptalk.mg', plugin_version: '1.0.0-contract-v1',
+      operation_status: 'BLOCKED', problem: {code: 'PROPOSAL_MISMATCH'},
+    });
   });
 
   it('returns a legal unavailable generation result when the local renderer is unavailable', () => {
-    const root = mkdtempSync(join(tmpdir(), 'deeptalk-mg-contract-'));
+    const root = temporaryDirectory('deeptalk-mg-contract-');
     const request = join(root, 'request.json'); const result = join(root, 'result.json');
     const proposal_id = assessSuitability({contract_version: CONTRACT_VERSION, request_id: 'suit-unavailable', opportunity}).proposal_id;
     writeFileSync(request, JSON.stringify({contract_version: CONTRACT_VERSION, request_id: 'gen-unavailable', proposal_id, opportunity}));
 
-    const child = spawnSync(process.execPath, [resolve('node_modules/vite-node/vite-node.mjs'), 'scripts/contract-runner-cli.ts', '--request', request, '--result', result, '--output-dir', join(root, 'artifacts')], {encoding: 'utf8', env: {...process.env, DEEPTALK_MG_CHROME_EXECUTABLE: join(root, 'missing-chrome')}});
+    const child = run(
+      ['--request', request, '--result', result, '--output-dir', join(root, 'artifacts')],
+      {...process.env, DEEPTALK_MG_CHROME_EXECUTABLE: join(root, 'missing-chrome')},
+    );
     expect(child.status).toBe(0);
     const unavailable = JSON.parse(readFileSync(result, 'utf8'));
     expect(unavailable).toMatchObject({operation_status: 'UNAVAILABLE', problem: {code: 'RENDERER_UNAVAILABLE'}});

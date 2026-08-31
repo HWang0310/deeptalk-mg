@@ -38,3 +38,8 @@ benchmark scene JSON
 
 Each benchmark fixes its id, data, profile, grammar, canvas, FPS, duration, and frame capture set. The renderer uses frame-derived animation only; it does not use randomness, wall-clock time, CSS animation, APIs, or remote assets.
 
+## Contract V1 runner boundary — IMPLEMENTED_UNRELEASED
+
+Core-facing identity is `org.deeptalk.mg` at plugin version `1.0.0-contract-v1`. The stable external commands are `node scripts/contract-runner.js` and `node scripts/contract-runner.js --version`; the JavaScript entrypoint delegates internally to the repo-local TypeScript/vite-node implementation with explicit argv and no shell. Core does not import this repository or know its internal module paths.
+
+The runner accepts only request/result/output-dir files. It rejects a supplied output root or existing lexical ancestor containing a symlink before creating the root, then rechecks the root after creation. Artifact paths reject absolute paths, `..`, containment escape, and existing symlink descendants. These controls are a narrow local-runner boundary, not a general filesystem sandbox.

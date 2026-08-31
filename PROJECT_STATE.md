@@ -1,6 +1,6 @@
 # DeepTalk MG — Canonical Project State
 
-> Current truth as of 2026-08-27. This project is independent from DeepTalk Core.
+> Current truth as of 2026-08-31. This project is independent from DeepTalk Core.
 
 ## Identity
 
@@ -8,7 +8,7 @@
 | --- | --- |
 | Repository | `HWang0310/deeptalk-mg` |
 | Branch | `main` |
-| Stage | Contract V1 runner IMPLEMENTED_UNRELEASED on review branch; awaiting independent ChatGPT Review |
+| Stage | Contract V1 runner IMPLEMENTED_UNRELEASED on review branch; final correction awaiting independent ChatGPT pin review |
 | Product boundary | Deterministic local MG asset research plus a plugin-owned Contract V1 runner; no DeepTalk runtime integration, acceptance, or pin |
 | Renderer decision | Remotion-first, local 1920×1080 at 30fps |
 | Primary visual hypothesis | Restrained Chinese editorial/financial profile with progressive disclosure |
@@ -59,4 +59,4 @@ Completed locally for CB01–CB08 using only existing grammars/variants. All eig
 
 ## Next gate
 
-Independent ChatGPT Review of the Contract V1 runner branch. It is not integrated with Core, accepted/pinned in Core configuration, or eligible for any real-episode use.
+Independent ChatGPT pin review of the corrected Contract V1 runner branch. It is not accepted, pinned, integrated with Core, released, or eligible for any real-episode use.

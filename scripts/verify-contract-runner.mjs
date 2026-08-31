@@ -2,12 +2,14 @@
 import assert from 'node:assert/strict';
 import {spawnSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
-import {existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, writeFileSync} from 'node:fs';
+import {existsSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, readdirSync, writeFileSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {join, relative, resolve} from 'node:path';
 
-const root = mkdtempSync(join(tmpdir(), 'deeptalk-mg-contract-proof-'));
-const runner = resolve('node_modules/vite-node/vite-node.mjs');
+const pluginId = 'org.deeptalk.mg';
+const pluginVersion = '1.0.0-contract-v1';
+const root = realpathSync(mkdtempSync(join(tmpdir(), 'deeptalk-mg-contract-proof-')));
+const runner = 'scripts/contract-runner.js';
 const sha256 = (path) => createHash('sha256').update(readFileSync(path)).digest('hex');
 const request = {
   contract_version: 'visual-asset-plugin-contract/1', request_id: 'suit-proof-001',
@@ -20,10 +22,11 @@ const request = {
   },
 };
 
-function invoke(argumentsList) {
-  const result = spawnSync(process.execPath, [runner, 'scripts/contract-runner-cli.ts', ...argumentsList], {encoding: 'utf8', maxBuffer: 4 * 1024 * 1024});
+function invoke(argumentsList, expectedStdout = '') {
+  const result = spawnSync(process.execPath, [runner, ...argumentsList], {cwd: resolve('.'), encoding: 'utf8', maxBuffer: 4 * 1024 * 1024});
   assert.equal(result.status, 0, result.stderr);
-  assert.equal(result.stdout, '');
+  assert.equal(result.stdout, expectedStdout);
+  return result;
 }
 
 function assertContained(path, outputDir) {
@@ -50,8 +53,8 @@ function generation(runName, proposal_id) {
   assert.equal(result.request_id, generationRequest.request_id);
   assert.equal(result.opportunity_id, request.opportunity.opportunity_id);
   assert.equal(result.proposal_id, proposal_id);
-  assert.equal(result.plugin_id, 'deeptalk-mg');
-  assert.equal(result.plugin_version, '1.0.0-contract-v1');
+  assert.equal(result.plugin_id, pluginId);
+  assert.equal(result.plugin_version, pluginVersion);
   assert.equal(result.operation_status, 'COMPLETED');
   assert.equal(result.candidate.candidate_status, 'READY');
   assert.equal(result.candidate.qa.status, 'PASSED');
@@ -66,18 +69,39 @@ function generation(runName, proposal_id) {
   assert.equal(primary.sha256, sha256(mediaPath));
   assert.equal(primary.duration_ms, result.candidate.duration_ms);
   const manifest = JSON.parse(readFileSync(manifestPath, 'utf8')); const qa = JSON.parse(readFileSync(qaPath, 'utf8'));
+  assert.equal(manifest.plugin_id, pluginId); assert.equal(manifest.plugin_version, pluginVersion);
   assert.equal(manifest.media.sha256, primary.sha256); assert.equal(manifest.media.duration_ms, primary.duration_ms);
   assert.equal(qa.status, 'PASSED'); assert.equal(qa.checks.sha256, primary.sha256);
-  return {result, sha: primary.sha256};
+  return {result, sha: primary.sha256, mediaPath, manifest, qa, primary};
 }
 
+const version = invoke(['--version'], `${pluginVersion}\n`).stdout.trim();
 const suitabilityRequestPath = join(root, 'suitability-request.json'); const suitabilityResultPath = join(root, 'suitability-result.json');
 writeFileSync(suitabilityRequestPath, JSON.stringify(request));
 invoke(['--request', suitabilityRequestPath, '--result', suitabilityResultPath, '--output-dir', join(root, 'suitability-artifacts')]);
 const suitability = JSON.parse(readFileSync(suitabilityResultPath, 'utf8'));
 assert.equal(suitability.operation_status, 'COMPLETED'); assert.equal(suitability.suitability, 'SUITABLE');
+assert.equal(suitability.plugin_id, pluginId); assert.equal(suitability.plugin_version, version);
 const first = generation('run-a', suitability.proposal_id);
 const second = generation('run-b', suitability.proposal_id);
+assert.equal(first.result.proposal_id, second.result.proposal_id);
 assert.equal(first.result.candidate.candidate_id, second.result.candidate.candidate_id);
 assert.equal(first.sha, second.sha);
-process.stdout.write(`contract-runner repeatability: pass ${first.sha}\n`);
+assert.ok(readFileSync(first.mediaPath).equals(readFileSync(second.mediaPath)));
+process.stdout.write([
+  'canonical command: node scripts/contract-runner.js',
+  'version command: node scripts/contract-runner.js --version',
+  `plugin_id: ${pluginId}`,
+  `plugin_version: ${version}`,
+  `proposal_id run1: ${first.result.proposal_id}`,
+  `proposal_id run2: ${second.result.proposal_id}`,
+  `candidate_id run1: ${first.result.candidate.candidate_id}`,
+  `candidate_id run2: ${second.result.candidate.candidate_id}`,
+  `PRIMARY_MEDIA SHA-256 run1: ${first.sha}`,
+  `PRIMARY_MEDIA SHA-256 run2: ${second.sha}`,
+  'binary equality: true',
+  `actual duration_ms: ${first.primary.duration_ms}`,
+  `artifact URI: ${first.primary.uri}`,
+  `manifest: ${first.manifest.artifact_version} ${first.manifest.plugin_id} ${first.manifest.plugin_version}`,
+  `QA: ${first.qa.artifact_version} ${first.qa.status}`,
+].join('\n') + '\n');
