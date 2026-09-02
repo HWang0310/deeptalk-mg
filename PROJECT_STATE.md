@@ -1,62 +1,54 @@
 # DeepTalk MG — Canonical Project State
 
-> Current truth as of 2026-08-31. This project is independent from DeepTalk Core.
+> Current operational truth. GitHub remote and exact reviewed SHAs override chat or local workspace claims.
 
 ## Identity
 
 | Field | Current truth |
 | --- | --- |
 | Repository | `HWang0310/deeptalk-mg` |
-| Branch | `main` |
-| Stage | Contract V1 runner IMPLEMENTED_UNRELEASED on review branch; final correction awaiting independent ChatGPT pin review |
-| Product boundary | Deterministic local MG asset research plus a plugin-owned Contract V1 runner; no DeepTalk runtime integration, acceptance, or pin |
+| Stable branch | `main` |
+| Runtime behavior baseline | `7ae59f1115da8a011113c81f31d320783b0ce8a4` |
+| Stage | Contract V1 runner `ACCEPTED / IMPLEMENTED_UNRELEASED`; plugin quality optimization is the next product track |
+| Plugin identity | `org.deeptalk.mg` |
+| Canonical runner | `node scripts/contract-runner.js` |
+| Product boundary | Independent MG plugin; DeepTalk Core is a separate consumer and may repin only after Nexus integration review |
 | Renderer decision | Remotion-first, local 1920×1080 at 30fps |
 | Primary visual hypothesis | Restrained Chinese editorial/financial profile with progressive disclosure |
 
+## Governance
+
+- `main` represents the latest plugin-local accepted stable runtime plus governance-only updates.
+- New engineering work starts from `main` on an isolated task branch and follows the current `HWang0310/engineering-journal` standards.
+- `AGENTS.md` defines the required bootstrap and project-specific rules.
+- `docs/DEEPTALK-INTEGRATION.md` is the non-negotiable DeepTalk compatibility gate.
+- Plugin-local quality acceptance never updates DeepTalk Core automatically. The plugin returns an exact SHA to DeepTalk Nexus for an independent integration review.
+
 ## What has been evidenced
 
-- DeepTalk Legacy uses viable deterministic Remotion rendering, structured scene payloads, and artifact-integrity QA.
-- Legacy's four primary grammars are timeline, bar, comparison cards, and node diagrams.
-- 《牛来》 validated semantic correctness and usefulness of MG, while showing that core-information windows can matter more than full semantic spans.
-- Legacy's likely quality constraints are composition, Chinese typography, hierarchy, limited grammar combinations, uniform easing, transitions, information density, and template feeling.
+- Standalone deterministic local Remotion rendering without a Core runtime import or API key.
+- Structured input to real MG media through `mg-scene/1`.
+- Contract V1 suitability/generation runner behavior at the runtime baseline.
+- Repeatability evidence from fixed renderer inputs and dependency lock.
+- Machine QA for dimensions, video-stream duration, phase stills, and artifact SHA checks.
+- Human visual review on the benchmark corpus.
+- Typography adversarial coverage including fail-closed cases.
+- DeepTalk Phase 5 synthetic integration with the exact-pinned runner.
+- A limited real-A-roll Phase 6 owner demo showed MG can produce a useful causal/mechanism candidate and exposed the next quality problem: reduce presentation-card feeling while improving hierarchy, motion rhythm, and video-native composition.
 
 ## Current best prototype
 
-`editorial-cn-v1` renders the unchanged eight-scene benchmark through independent `mg-scene/1` inputs and differentiated Remotion grammars. Causal, cycle, relationship, and abstract scenes now have distinct composition anchors and meaning-bound motion structures. Each scene has local MP4, opening/primary/full stills, contact sheet, manifest, and machine QA result.
+`editorial-cn-v1` renders the benchmark through independent `mg-scene/1` inputs and differentiated Remotion grammars. Causal, cycle, relationship, and abstract scenes have distinct composition anchors and meaning-bound motion structures. The Contract V1 runner dynamically maps supported opportunities into the existing rendering system instead of importing Core internals.
 
-## Verified in V0 and V0.1
+## Known limitations / quality targets
 
-- Standalone local render: yes; no DeepTalk runtime import or API key.
-- Structured input to real MG asset: yes, through `mg-scene/1`.
-- Repeatability: yes, two render runs produced matching MP4 SHA-256 values.
-- Machine QA: yes, all eight outputs pass dimensions, 30fps video-stream duration, phase-still, and SHA checks.
-- Human review: completed; see `docs/reviews/2026-08-27-v0-human-visual-review.md`.
-- V0/V0.1 comparison: completed from the same eight definitions; see `docs/reviews/2026-08-27-v0.1-quality-differentiation-review.md`.
-- Typography adversarial suite: eight required categories plus intentional fail-closed cases are covered by automated tests.
+- Information density can be too high for short viewing windows.
+- Repeated rule/headline/card structures can create presentation-template feeling.
+- Relationship, cycle, causal, and abstract grammars need stronger spatial and motion differentiation.
+- Progressive disclosure, typography, hierarchy, easing, transitions, and rhythm need creator-facing refinement.
+- Cross-machine Chinese font reproducibility remains an operational concern.
+- The plugin should prefer `ABSTAIN` over visually polished filler when a semantic opportunity is not a useful MG fit.
 
-## Not yet evidenced
+## Current next gate
 
-- Whether the V2 system improves real creator/editor outcomes rather than the current synthetic benchmark.
-- Whether the typography fitter works across production-length Chinese copy.
-- Whether a high-impact local grammar is needed for any benchmark.
-- Real-episode integration, a shared plugin contract, and production-level visual selection.
-
-## Known limitations
-
-- The default profile is visually consistent but its repeated top-left rule and headline placement still create template feeling.
-- Relationship, cycle, causal, and abstract grammars need more distinctive spatial and motion composition.
-- Cross-machine Chinese font reproducibility and real-episode effectiveness remain unverified.
-- Causal branching/delay, positive/negative feedback, relationship tension, and bottleneck/constraint abstract variants remain unverified.
-- Native Chrome GL produced one unstable `multi-node` render at the pixel level. The renderer is now configured for SwiftShader; isolated repeated relationship renders matched SHA, while a full-suite SwiftShader regeneration remains future verification work.
-
-## V0.2 Final Status
-
-**PASS.** V0.2 moved semantic overlays into the first disclosure window, then completed two unchanged fixed-SwiftShader H.264 renders with 18/18 binary-identical MP4 SHA-256 values and media QA. The family review accepts bounded semantic sub-patterns while retaining the editorial-cn-v1 system.
-
-## Common Brief Trial — MG Track
-
-Completed locally for CB01–CB08 using only existing grammars/variants. All eight were assessed SUITABLE and rendered under the canonical SwiftShader path; media QA passed. This is comparison evidence only, not a Plugin Contract or a new MG version.
-
-## Next gate
-
-Independent ChatGPT pin review of the corrected Contract V1 runner branch. It is not accepted, pinned, integrated with Core, released, or eligible for any real-episode use.
+Start an independent MG quality-optimization Curator session from repository Recovery Issue #1. The plugin project may improve renderer internals and visual language, but completion requires native validation, representative before/after visual evidence, Contract V1 compatibility, and a handback exact SHA for DeepTalk Nexus integration review.
